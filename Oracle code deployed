@@ -1,0 +1,968 @@
+-- Drop existing tables with CASCADE CONSTRAINTS
+DROP TABLE TvShow CASCADE CONSTRAINTS;
+DROP TABLE Movie CASCADE CONSTRAINTS;
+DROP TABLE VideoGames CASCADE CONSTRAINTS;
+DROP TABLE Actor CASCADE CONSTRAINTS;
+DROP TABLE Director CASCADE CONSTRAINTS;
+DROP TABLE Writer CASCADE CONSTRAINTS;
+DROP TABLE TvReviews CASCADE CONSTRAINTS;
+DROP TABLE MovieReviews CASCADE CONSTRAINTS;
+DROP TABLE GameReviews CASCADE CONSTRAINTS;
+DROP TABLE TvShowWriters CASCADE CONSTRAINTS;
+DROP TABLE TvShowActors CASCADE CONSTRAINTS;
+DROP TABLE TvShowDirectors CASCADE CONSTRAINTS;
+DROP TABLE MovieWriters CASCADE CONSTRAINTS;
+DROP TABLE MovieActors CASCADE CONSTRAINTS;
+DROP TABLE MovieDirectors CASCADE CONSTRAINTS;
+DROP TABLE GameDirectors CASCADE CONSTRAINTS;
+DROP TABLE GameActors CASCADE CONSTRAINTS;
+DROP TABLE GameWriters CASCADE CONSTRAINTS;
+DROP TABLE TV_GENRE CASCADE CONSTRAINTS;
+DROP TABLE TV_AWARDS CASCADE CONSTRAINTS;
+DROP TABLE MOVIE_GENRE CASCADE CONSTRAINTS;
+DROP TABLE MOVIE_AWARDS CASCADE CONSTRAINTS;
+DROP TABLE VIDEO_GAME_GENRE CASCADE CONSTRAINTS;
+DROP TABLE VIDEO_GAME_AWARDS CASCADE CONSTRAINTS;
+DROP TABLE ACTOR_GENRE CASCADE CONSTRAINTS;
+DROP TABLE ACTOR_AWARDS CASCADE CONSTRAINTS;
+DROP TABLE DIRECTOR_GENRE CASCADE CONSTRAINTS;
+DROP TABLE DIRECTOR_AWARDS CASCADE CONSTRAINTS;
+
+
+
+
+
+
+
+-- Create TvShow Table
+CREATE TABLE TvShow (
+    TvShowID NUMBER CONSTRAINT TvShow_tvShowId_pk PRIMARY KEY, -- Unique identifier for TV shows
+    TvEpisodes NUMBER, -- Number of episodes
+    TvDescription VARCHAR2(255), -- Description of the TV show
+    TvTrailer_Runtime NUMBER, -- Trailer runtime in seconds
+    TvTrailer_URL VARCHAR2(255), -- URL link to the TV show trailer
+    TvTrailer_ReleaseDate DATE -- Release date of the TV show trailer
+    -- Other columns might include genre, release date, etc.
+);
+
+-- Create Movie Table
+CREATE TABLE Movie (
+    MovieID NUMBER CONSTRAINT Movie_MovieId_pk PRIMARY KEY, -- Unique identifier for movies
+    MovieRuntime NUMBER, -- Movie runtime in minutes
+    MovieDescription VARCHAR2(255), -- Description of the movie
+    MovieTitle VARCHAR2(255), -- Title of the movie
+    MovieTrailer_Runtime NUMBER, -- Trailer runtime in seconds
+    MovieTrailer_URL VARCHAR2(255), -- URL link to the movie trailer
+    MovieTrailer_ReleaseDate DATE -- Release date of the movie trailer
+    -- Other columns might include genre, release date, etc.
+);
+
+-- Create Video Games Table
+CREATE TABLE VideoGames (
+    GameID NUMBER CONSTRAINT VideoGames_gameId_pk PRIMARY KEY, -- Unique identifier for video games
+    GameTitle VARCHAR2(255), -- Title of the video game
+    GameDescription VARCHAR2(255), -- Description of the video game
+    GameTrailer_Runtime NUMBER, -- Trailer runtime in seconds
+    GameTrailer_URL VARCHAR2(255), -- URL link to the video game trailer
+    GameTrailer_ReleaseDate DATE -- Release date of the video game trailer
+    -- Other columns might include genre, release date, etc.
+);
+
+-- Create Actor Table
+CREATE TABLE Actor (
+    ActorID NUMBER CONSTRAINT Actor_actorId_pk PRIMARY KEY, -- Unique identifier for actors
+    ActorDOB DATE, -- Actor's date of birth
+    ActorAge NUMBER, -- Actor's age
+    ActorHeight NUMBER, -- Actor's height
+    ActorFirstName VARCHAR2(50), -- Actor's first name
+    ActorMiddleInitial CHAR(1), -- Actor's middle initial
+    ActorLastName VARCHAR2(50) -- Actor's last name
+    -- Other columns might include gender, nationality, etc.
+);
+
+-- Create Director Table (similar structure to Actor)
+CREATE TABLE Director (
+    DirectorID NUMBER CONSTRAINT Director_DirectorID_pk PRIMARY KEY, -- Unique identifier for directors
+    DirectorDOB DATE, -- Director's date of birth
+    DirectorAge NUMBER, -- Director's age
+    DirectorHeight NUMBER, -- Director's height
+    DirectorFirstName VARCHAR2(50), -- Director's first name
+    DirectorMiddleInitial CHAR(1), -- Director's middle initial
+    DirectorLastName VARCHAR2(50) -- Director's last name
+    -- Other columns might include gender, nationality, etc.
+);
+
+-- Create Writer Table (similar structure to Actor)
+CREATE TABLE Writer (
+    WriterID NUMBER CONSTRAINT Writer_writerID_pk PRIMARY KEY, -- Unique identifier for writers
+    WriterDOB DATE, -- Writer's date of birth
+    WriterAge NUMBER, -- Writer's age
+    WriterHeight NUMBER, -- Writer's height
+    WriterFirstName VARCHAR2(50), -- Writer's first name
+    WriterMiddleInitial CHAR(1), -- Writer's middle initial
+    WriterLastName VARCHAR2(50) -- Writer's last name
+    -- Other columns might include gender, nationality, etc.
+);
+
+-- Create Review Tables (for TvShow, Movie, VideoGames)
+CREATE TABLE TvReviews (
+    TvShowID NUMBER, -- ID of the TV show being reviewed
+    StarRating NUMBER, -- Rating given to the TV show
+    UserName VARCHAR2(50), -- Name of the user who reviewed the TV show
+    ReviewContents VARCHAR2(255), -- Contents of the review
+    CONSTRAINT TvR_TvID_pk PRIMARY KEY (TvShowID, UserName), -- Primary key constraint
+    CONSTRAINT TvR_TvID_fk FOREIGN KEY (TvShowID) REFERENCES TvShow(TvShowID) -- Foreign key constraint
+);
+
+CREATE TABLE MovieReviews (
+    MovieID NUMBER, -- ID of the movie being reviewed
+    StarRating NUMBER, -- Rating given to the movie
+    UserName VARCHAR2(50), -- Name of the user who reviewed the movie
+    ReviewContents VARCHAR2(255), -- Contents of the review
+    CONSTRAINT MovieR_MovieID_pk PRIMARY KEY (MovieID, UserName), -- Primary key constraint
+    CONSTRAINT Movie_MovieID_fk FOREIGN KEY (MovieID) REFERENCES Movie(MovieID) -- Foreign key constraint
+);
+
+CREATE TABLE GameReviews (
+    GameID NUMBER, -- ID of the video game being reviewed
+    StarRating NUMBER, -- Rating given to the video game
+    UserName VARCHAR2(50), -- Name of the user who reviewed the video game
+    ReviewContents VARCHAR2(255), -- Contents of the review
+    CONSTRAINT GameR_GameID_pk PRIMARY KEY (GameID, UserName), -- Primary key constraint
+    CONSTRAINT GameR_GameID_fk FOREIGN KEY (GameID) REFERENCES VideoGames(GameID) -- Foreign key constraint
+);
+
+-- Create M:N Relationship Tables (for Movie, TvShow, VideoGames with Actors, Writers, Directors)
+CREATE TABLE MovieActors (
+    MovieID NUMBER, -- ID of the movie
+    ActorID NUMBER, -- ID of the actor
+    CONSTRAINT MovieAct_MovieID__ActID_pk PRIMARY KEY (MovieID, ActorID), -- Primary key constraint
+    CONSTRAINT MovieAct_MovieID_fk FOREIGN KEY (MovieID) REFERENCES Movie(MovieID), -- Foreign key constraint
+    CONSTRAINT MovieAct_ActID_fk FOREIGN KEY (ActorID) REFERENCES Actor(ActorID) -- Foreign key constraint
+);
+
+CREATE TABLE MovieWriters (
+    MovieID NUMBER, -- ID of the movie
+    WriterID NUMBER, -- ID of the writer
+    CONSTRAINT MovieWri_MovieID_WriID_pk PRIMARY KEY (MovieID, WriterID), -- Primary key constraint
+    CONSTRAINT MovieWri_MovieID_MovieID_fk FOREIGN KEY (MovieID) REFERENCES Movie(MovieID), -- Foreign key constraint
+    CONSTRAINT MovieWri_WriID_WriID_fk FOREIGN KEY (WriterID) REFERENCES Writer(WriterID) -- Foreign key constraint
+);
+
+CREATE TABLE MovieDirectors (
+    MovieID NUMBER, -- ID of the movie
+    DirectorID NUMBER, -- ID of the director
+    CONSTRAINT MovieDir_MovieID_DirID_pk PRIMARY KEY (MovieID, DirectorID), -- Primary key constraint
+    CONSTRAINT MovieDir_MovieID_MovieID_fk
+FOREIGN KEY (MovieID) REFERENCES Movie(MovieID), -- Foreign key constraint
+    CONSTRAINT MovieDir_DirID_DirID_fk FOREIGN KEY (DirectorID) REFERENCES Director(DirectorID) -- Foreign key constraint
+);
+
+CREATE TABLE TvShowActors (
+    TvShowID NUMBER, -- ID of the TV show
+    ActorID NUMBER, -- ID of the actor
+    CONSTRAINT TvAct_TvID_ActID_pk PRIMARY KEY (TvShowID, ActorID), -- Primary key constraint
+    CONSTRAINT TvAct_TvID_TvID_fk FOREIGN KEY (TvShowID) REFERENCES TvShow(TvShowID), -- Foreign key constraint
+    CONSTRAINT Tv_ActID_ActID FOREIGN KEY (ActorID) REFERENCES Actor(ActorID) -- Foreign key constraint
+);
+
+CREATE TABLE TvShowWriters (
+    TvShowID NUMBER, -- ID of the TV show
+    WriterID NUMBER, -- ID of the writer
+    CONSTRAINT TvWri_TvID_WriID_pk PRIMARY KEY (TvShowID, WriterID), -- Primary key constraint
+    CONSTRAINT TvWri_TvID_TvID_fk FOREIGN KEY (TvShowID) REFERENCES TvShow(TvShowID), -- Foreign key constraint
+    CONSTRAINT TvWri_WriID_WriID_fk FOREIGN KEY (WriterID) REFERENCES Writer(WriterID) -- Foreign key constraint
+);
+
+CREATE TABLE TvShowDirectors (
+    TvShowID NUMBER, -- ID of the TV show
+    DirectorID NUMBER, -- ID of the director
+    CONSTRAINT TvDir_TvSID_dID_pk PRIMARY KEY (TvShowID, DirectorID), -- Primary key constraint
+    CONSTRAINT TvDir_TvID_TvID_fk FOREIGN KEY (TvShowID) REFERENCES TvShow(TvShowID), -- Foreign key constraint
+    CONSTRAINT TvDir_DirID_DirID_fk FOREIGN KEY (DirectorID) REFERENCES Director(DirectorID) -- Foreign key constraint
+);
+
+CREATE TABLE GameActors (
+    GameID NUMBER, -- ID of the video game
+    ActorID NUMBER, -- ID of the actor
+    CONSTRAINT GameAct_GameID_ActID_pk PRIMARY KEY (GameID, ActorID), -- Primary key constraint
+    CONSTRAINT GameAct_GameID_GameID_fk FOREIGN KEY (GameID) REFERENCES VideoGames(GameID), -- Foreign key constraint
+    CONSTRAINT GameAct_ActID_ActID_fk FOREIGN KEY (ActorID) REFERENCES Actor(ActorID) -- Foreign key constraint
+);
+
+CREATE TABLE GameWriters (
+    GameID NUMBER, -- ID of the video game
+    WriterID NUMBER, -- ID of the writer
+    CONSTRAINT gWri_gID_WriID_pk PRIMARY KEY (GameID, WriterID), -- Primary key constraint
+    CONSTRAINT gWri_gID_gID_fk FOREIGN KEY (GameID) REFERENCES VideoGames(GameID), -- Foreign key constraint
+    CONSTRAINT gWri_WriID_WriID_fk FOREIGN KEY (WriterID) REFERENCES Writer(WriterID) -- Foreign key constraint
+);
+
+CREATE TABLE GameDirectors (
+    GameID NUMBER, -- ID of the video game
+    DirectorID NUMBER, -- ID of the director
+    CONSTRAINT gD_gID_DirID_pk PRIMARY KEY (GameID, DirectorID), -- Primary key constraint
+    CONSTRAINT gD_gID_gID_fk FOREIGN KEY (GameID) REFERENCES VideoGames(GameID), -- Foreign key constraint
+    CONSTRAINT gD_dirID_DirID_fk FOREIGN KEY (DirectorID) REFERENCES Director(DirectorID) -- Foreign key constraint
+);
+
+
+--The Weak Entities
+CREATE TABLE TV_GENRE (
+  TVShowID NUMBER REFERENCES TvShow(TVShowID), -- Creates a table named TV_GENRE with columns TVShowID and TVGenre. TVShowID column references the TVShow table's TVShowID column.
+  TVGenre VARCHAR2(50) -- Defines TVGenre column as a VARCHAR2 datatype with a maximum length of 50 characters.
+);
+
+
+CREATE TABLE TV_AWARDS (
+  TVShowID NUMBER(10) REFERENCES TvShow(TVShowID), -- Creates a table named TV_AWARDS with columns TVShowID and TVAwards. TVShowID column references the TVShow table's TVShowID column.
+  TVAwards VARCHAR2(50) -- Defines TVAwards column as a VARCHAR2 datatype with a maximum length of 50 characters.
+);
+
+
+CREATE TABLE MOVIE_GENRE (
+  MovieID NUMBER(10) REFERENCES Movie(MovieID), -- Creates a table named MOVIE_GENRE with columns MovieID and MovieGenre. MovieID column references the Movie table's MovieID column.
+  MovieGenre VARCHAR2(50) -- Defines MovieGenre column as a VARCHAR2 datatype with a maximum length of 50 characters.
+);
+
+
+CREATE TABLE MOVIE_AWARDS (
+  MovieID NUMBER(10) REFERENCES Movie(MovieID), -- Creates a table named MOVIE_AWARDS with columns MovieID and MovieAwards. MovieID column references the Movie table's MovieID column.
+  MovieAwards VARCHAR2(50) -- Defines MovieAwards column as a VARCHAR2 datatype with a maximum length of 50 characters.
+);
+
+
+CREATE TABLE VIDEO_GAME_GENRE (
+  GameID NUMBER(10) REFERENCES VideoGames(GameID), -- Creates a table named VIDEO_GAME_GENRE with columns GameID and GameGenre. GameID column references the VideoGames table's GameID column.
+  GameGenre VARCHAR2(50) -- Defines GameGenre column as a VARCHAR2 datatype with a maximum length of 50 characters.
+);
+
+
+CREATE TABLE VIDEO_GAME_AWARDS (
+  GameID NUMBER(10) REFERENCES VideoGames(GameID), -- Creates a table named VIDEO_GAME_AWARDS with columns GameID and GameAwards. GameID column references the VideoGames table's GameID column.
+  GameAwards VARCHAR2(50) -- Defines GameAwards column as a VARCHAR2 datatype with a maximum length of 50 characters.
+);
+
+
+CREATE TABLE ACTOR_GENRE (
+  ActorID NUMBER(10) REFERENCES ACTOR(ActorID), -- Creates a table named ACTOR_GENRE with columns ActorID and ActorGenre. ActorID column references the ACTOR table's ActorID column.
+  ActorGenre VARCHAR2(50) -- Defines ActorGenre column as a VARCHAR2 datatype with a maximum length of 50 characters.
+);
+
+
+CREATE TABLE ACTOR_AWARDS (
+  ActorID NUMBER(10) REFERENCES ACTOR(ActorID), -- Creates a table named ACTOR_AWARDS with columns ActorID and ActorAwards. ActorID column references the ACTOR table's ActorID column.
+  ActorAwards VARCHAR2(50) -- Defines ActorAwards column as a VARCHAR2 datatype with a maximum length of 50 characters.
+);
+
+
+CREATE TABLE DIRECTOR_GENRE (
+  DirectorID NUMBER(10) REFERENCES DIRECTOR(DirectorID), -- Creates a table named DIRECTOR_GENRE with columns DirectorID and DirectorGenre. DirectorID column references the DIRECTOR table's DirectorID column.
+  DirectorGenre VARCHAR2(50) -- Defines DirectorGenre column as a VARCHAR2 datatype with a maximum length of 50 characters.
+);
+
+
+CREATE TABLE DIRECTOR_AWARDS (
+  DirectorID NUMBER(10) REFERENCES DIRECTOR(DirectorID), -- Creates a table named DIRECTOR_AWARDS with columns DirectorID and DirectorAwards. DirectorID column references the DIRECTOR table's DirectorID column.
+  DirectorAwards VARCHAR2(50) -- Defines DirectorAwards column as a VARCHAR2 datatype with a maximum length of 50 characters.
+);
+
+
+
+
+-- -- For MySQL
+-- DESCRIBE TV_GENRE;
+-- DESCRIBE TV_AWARDS;
+-- DESCRIBE MOVIE_GENRE;
+-- DESCRIBE MOVIE_AWARDS;
+-- DESCRIBE VIDEO_GAME_GENRE;
+-- DESCRIBE VIDEO_GAME_AWARDS;
+-- DESCRIBE ACTOR_GENRE;
+-- DESCRIBE ACTOR_AWARDS;
+-- DESCRIBE DIRECTOR_GENRE;
+-- DESCRIBE DIRECTOR_AWARDS;
+
+
+--Populating the Tables
+-- Spider-Man: Into the Spider-Verse
+INSERT INTO Movie (MovieID, MovieRuntime, MovieDescription, MovieTitle, MovieTrailer_Runtime, MovieTrailer_URL, MovieTrailer_ReleaseDate)
+VALUES
+  (1, 117, 'Teen Miles Morales becomes the Spider-Man of his universe and must join with five spider-powered individuals from other dimensions to stop a threat for all realities.', 'Spider-Man: Into the Spider-Verse', 2.67, 'https://www.youtube.com/watch?v=g4Hbz2jLxvQ', TO_DATE('2018-12-14', 'YYYY-MM-DD'));
+
+-- Spider-Man: Across the Spider-Verse
+INSERT INTO Movie (MovieID, MovieRuntime, MovieDescription, MovieTitle, MovieTrailer_Runtime, MovieTrailer_URL, MovieTrailer_ReleaseDate)
+VALUES
+  (2, 140, 'Miles Morales catapults across the Multiverse, where he encounters a team of Spider-People charged with protecting its very existence.', 'Spider-Man: Across the Spider-Verse', 2.82, 'https://www.youtube.com/watch?v=shW9i6k8cB0', TO_DATE('2023-06-02', 'YYYY-MM-DD'));
+
+-- Spider-Man: Homecoming
+INSERT INTO Movie (MovieID, MovieRuntime, MovieDescription, MovieTitle, MovieTrailer_Runtime, MovieTrailer_URL, MovieTrailer_ReleaseDate)
+VALUES
+  (3, 133, 'Peter Parker balances his life as an ordinary high school student in Queens with his superhero alter-ego Spider-Man.', 'Spider-Man: Homecoming', 2.42, 'https://www.youtube.com/watch?v=rk-dF1lIbIg', TO_DATE('2017-07-07', 'YYYY-MM-DD'));
+
+-- Spider-Man: Far From Home
+INSERT INTO Movie (MovieID, MovieRuntime, MovieDescription, MovieTitle, MovieTrailer_Runtime, MovieTrailer_URL, MovieTrailer_ReleaseDate)
+VALUES
+  (4, 129, 'Following the events of Avengers: Endgame, Spider-Man must step up to take on new threats in a world that has changed forever.', 'Spider-Man: Far From Home', 2.77, 'https://www.youtube.com/watch?v=DYYtuKyMtY8', TO_DATE('2019-06-26', 'YYYY-MM-DD'));
+
+-- Spider-Man: No Way Home
+INSERT INTO Movie (MovieID, MovieRuntime, MovieDescription, MovieTitle, MovieTrailer_Runtime, MovieTrailer_URL, MovieTrailer_ReleaseDate)
+VALUES
+  (5, 148, 'With Spider-Mans identity now revealed, Peter asks Doctor Strange for help. When a spell goes wrong, dangerous foes from other worlds start to appear.', 'Spider-Man: No Way Home', 3.05, 'https://www.youtube.com/watch?v=rt-2cxAiPJk', TO_DATE('2021-12-13', 'YYYY-MM-DD'));
+
+-- Captain America: Civil War (2016)
+INSERT INTO Movie (MovieID, MovieRuntime, MovieDescription, MovieTitle, MovieTrailer_Runtime, MovieTrailer_URL, MovieTrailer_ReleaseDate)
+VALUES
+  (6, 144, 'Political involvement in the Avengers'' affairs causes a rift between Captain America and Iron Man.', 'Captain America: Civil War', 2.4, 'https://www.youtube.com/watch?v=dKrVegVI0Us', TO_DATE('2016-05-06', 'YYYY-MM-DD'));
+
+-- Spider-Man (2002)
+INSERT INTO Movie (MovieID, MovieRuntime, MovieDescription, MovieTitle, MovieTrailer_Runtime, MovieTrailer_URL, MovieTrailer_ReleaseDate)
+VALUES
+  (7, 146, 'After being bitten by a genetically-modified spider, a shy teenager gains spider-like abilities that he uses to fight injustice as a masked superhero and face a vengeful enemy.', 'Spider-Man', 2.43, 'https://www.youtube.com/watch?v=t06RUxPbp_c', TO_DATE('2002-05-03', 'YYYY-MM-DD'));
+
+-- Spider-Man 2 (2004)
+INSERT INTO Movie (MovieID, MovieRuntime, MovieDescription, MovieTitle, MovieTrailer_Runtime, MovieTrailer_URL, MovieTrailer_ReleaseDate)
+VALUES
+  (8, 150, 'Peter Parker is beset with troubles in his failing personal life as he battles a former brilliant scientist named Otto Octavius.', 'Spider-Man 2', 2.5, 'https://www.youtube.com/watch?v=CA5vsCnLm34', TO_DATE('2004-10-20', 'YYYY-MM-DD'));
+
+-- Spider-Man 3 (2007)
+INSERT INTO Movie (MovieID, MovieRuntime, MovieDescription, MovieTitle, MovieTrailer_Runtime, MovieTrailer_URL, MovieTrailer_ReleaseDate)
+VALUES
+  (9, 147, 'A strange black entity from another world bonds with Peter Parker and causes inner turmoil as he contends with new villains, temptations, and revenge.', 'Spider-Man 3', 2.46, 'https://www.youtube.com/watch?v=e5wUilOeOmg', TO_DATE('2007-05-04', 'YYYY-MM-DD'));
+
+-- The Amazing Spider-Man (2012)
+INSERT INTO Movie (MovieID, MovieRuntime, MovieDescription, MovieTitle, MovieTrailer_Runtime, MovieTrailer_URL, MovieTrailer_ReleaseDate)
+VALUES
+  (10, 153, 'After Peter Parker is bitten by a genetically altered spider, he gains newfound, spider-like powers and ventures out to save the city from the machinations of a mysterious reptilian foe.', 'The Amazing Spider-Man', 3.55, 'https://www.youtube.com/watch?v=-tnxzJ0SSOw', TO_DATE('2012-07-03', 'YYYY-MM-DD'));
+
+
+
+--Directors
+INSERT INTO Director (DirectorID, DirectorDOB, DirectorAge, DirectorHeight, DirectorFirstName, DirectorMiddleInitial, DirectorLastName)
+VALUES
+  (1, TO_DATE('1972-10-29', 'YYYY-MM-DD'), 51, 178, 'Bob', NULL, 'Persichetti');
+
+INSERT INTO Director (DirectorID, DirectorDOB, DirectorAge, DirectorHeight, DirectorFirstName, DirectorMiddleInitial, DirectorLastName)
+VALUES
+  (2, TO_DATE('1971-08-28', 'YYYY-MM-DD'), 52, 185, 'Peter', NULL, 'Ramsey');
+
+INSERT INTO Director (DirectorID, DirectorDOB, DirectorAge, DirectorHeight, DirectorFirstName, DirectorMiddleInitial, DirectorLastName)
+VALUES
+  (3, TO_DATE('1973-09-01', 'YYYY-MM-DD'), 49, 178, 'Rodney', NULL, 'Rothman');
+
+INSERT INTO Director (DirectorID, DirectorDOB, DirectorAge, DirectorHeight, DirectorFirstName, DirectorMiddleInitial, DirectorLastName)
+VALUES
+  (4, TO_DATE('1969-06-02', 'YYYY-MM-DD'), 54, 42, 'Joaquim', 'D', 'Santos');
+
+INSERT INTO Director (DirectorID, DirectorDOB, DirectorAge, DirectorHeight, DirectorFirstName, DirectorMiddleInitial, DirectorLastName)
+VALUES
+  (5, TO_DATE('1973-01-25', 'YYYY-MM-DD'), 49, 185, 'Kemp', NULL, 'Powers');
+
+INSERT INTO Director (DirectorID, DirectorDOB, DirectorAge, DirectorHeight, DirectorFirstName, DirectorMiddleInitial, DirectorLastName)
+VALUES
+  (6, TO_DATE('1973-09-15', 'YYYY-MM-DD'), 49, 178, 'Justin', 'K', 'Thompson');
+
+INSERT INTO Director (DirectorID, DirectorDOB, DirectorAge, DirectorHeight, DirectorFirstName, DirectorMiddleInitial, DirectorLastName)
+VALUES
+  (7, TO_DATE('1975-07-12', 'YYYY-MM-DD'), 48, 183, 'Jon', NULL, 'Watts');
+
+
+--Writers
+INSERT INTO Writer (WriterID, WriterDOB, WriterAge, WriterHeight, WriterFirstName, WriterMiddleInitial, WriterLastName)
+VALUES
+  (1, TO_DATE('1975-02-21', 'YYYY-MM-DD'), 47, 175, 'Phil', NULL, 'Lord');
+
+INSERT INTO Writer (WriterID, WriterDOB, WriterAge, WriterHeight, WriterFirstName, WriterMiddleInitial, WriterLastName)
+VALUES
+  (2, TO_DATE('1973-09-01', 'YYYY-MM-DD'), 49, 178, 'Rodney', NULL, 'Rothman');
+
+INSERT INTO Writer (WriterID, WriterDOB, WriterAge, WriterHeight, WriterFirstName, WriterMiddleInitial, WriterLastName)
+VALUES
+  (3, TO_DATE('1975-02-21', 'YYYY-MM-DD'), 47, 175, 'Christopher', NULL, 'Miller');
+
+INSERT INTO Writer (WriterID, WriterDOB, WriterAge, WriterHeight, WriterFirstName, WriterMiddleInitial, WriterLastName)
+VALUES
+  (4, TO_DATE('1977-04-16', 'YYYY-MM-DD'), 45, 185, 'Dave', NULL, 'Callaham');
+
+INSERT INTO Writer (WriterID, WriterDOB, WriterAge, WriterHeight, WriterFirstName, WriterMiddleInitial, WriterLastName)
+VALUES
+  (5, TO_DATE('1975-10-20', 'YYYY-MM-DD'), 47, 178, 'Jonathan', NULL, 'Goldstein');
+
+INSERT INTO Writer (WriterID, WriterDOB, WriterAge, WriterHeight, WriterFirstName, WriterMiddleInitial, WriterLastName)
+VALUES
+  (6, TO_DATE('1985-07-05', 'YYYY-MM-DD'), 36, 178, 'John Francis', NULL, 'Daley');
+
+INSERT INTO Writer (WriterID, WriterDOB, WriterAge, WriterHeight, WriterFirstName, WriterMiddleInitial, WriterLastName)
+VALUES
+  (7, TO_DATE('1975-02-21', 'YYYY-MM-DD'), 47, 175, 'Stan', NULL, 'Lee');
+
+INSERT INTO Writer (WriterID, WriterDOB, WriterAge, WriterHeight, WriterFirstName, WriterMiddleInitial, WriterLastName)
+VALUES
+  (8, TO_DATE('1977-04-16', 'YYYY-MM-DD'), 45, 185, 'Erik', NULL, 'Sommers');
+
+
+--Actors
+INSERT INTO Actor (ActorID, ActorDOB, ActorAge, ActorHeight, ActorFirstName, ActorMiddleInitial, ActorLastName)
+VALUES
+  (1, TO_DATE('1995-05-04', 'YYYY-MM-DD'), 28, 180, 'Shameik', NULL, 'Moore');
+
+INSERT INTO Actor (ActorID, ActorDOB, ActorAge, ActorHeight, ActorFirstName, ActorMiddleInitial, ActorLastName)
+VALUES
+  (2, TO_DATE('1978-05-28', 'YYYY-MM-DD'), 43, 178, 'Jake', NULL, 'Johnson');
+
+INSERT INTO Actor (ActorID, ActorDOB, ActorAge, ActorHeight, ActorFirstName, ActorMiddleInitial, ActorLastName)
+VALUES
+  (3, TO_DATE('1996-12-11', 'YYYY-MM-DD'), 25, 172, 'Hailee', NULL, 'Steinfield');
+
+INSERT INTO Actor (ActorID, ActorDOB, ActorAge, ActorHeight, ActorFirstName, ActorMiddleInitial, ActorLastName)
+VALUES
+  (4, TO_DATE('1974-02-16', 'YYYY-MM-DD'), 48, 187, 'Mahershala', NULL, 'Ali');
+
+INSERT INTO Actor (ActorID, ActorDOB, ActorAge, ActorHeight, ActorFirstName, ActorMiddleInitial, ActorLastName)
+VALUES
+  (5, TO_DATE('1939-09-01', 'YYYY-MM-DD'), 83, 160, 'Lily', NULL, 'Tomlin');
+
+INSERT INTO Actor (ActorID, ActorDOB, ActorAge, ActorHeight, ActorFirstName, ActorMiddleInitial, ActorLastName)
+VALUES
+  (6, TO_DATE('1988-12-01', 'YYYY-MM-DD'), 34, 157, 'Zoe', NULL, 'Kravitz');
+
+INSERT INTO Actor (ActorID, ActorDOB, ActorAge, ActorHeight, ActorFirstName, ActorMiddleInitial, ActorLastName)
+VALUES
+  (7, TO_DATE('1988-11-27', 'YYYY-MM-DD'), 34, 160, 'Kimiko', NULL, 'Glenn');
+
+INSERT INTO Actor (ActorID, ActorDOB, ActorAge, ActorHeight, ActorFirstName, ActorMiddleInitial, ActorLastName)
+VALUES
+  (8, TO_DATE('1973-07-23', 'YYYY-MM-DD'), 48, 160, 'Kathryn', 'H', 'Hahn');
+
+INSERT INTO Actor (ActorID, ActorDOB, ActorAge, ActorHeight, ActorFirstName, ActorMiddleInitial, ActorLastName)
+VALUES
+  (9, TO_DATE('1980-10-26', 'YYYY-MM-DD'), 41, 183, 'Chris', NULL, 'Pine');
+
+INSERT INTO Actor (ActorID, ActorDOB, ActorAge, ActorHeight, ActorFirstName, ActorMiddleInitial, ActorLastName)
+VALUES
+  (10, TO_DATE('1990-08-22', 'YYYY-MM-DD'), 33, 175, 'Edwin R.', NULL, 'Habacon');
+
+INSERT INTO Actor (ActorID, ActorDOB, ActorAge, ActorHeight, ActorFirstName, ActorMiddleInitial, ActorLastName)
+VALUES
+  (11, TO_DATE('1983-07-27', 'YYYY-MM-DD'), 38, 168, 'Greta', NULL, 'Lee');
+
+INSERT INTO Actor (ActorID, ActorDOB, ActorAge, ActorHeight, ActorFirstName, ActorMiddleInitial, ActorLastName)
+VALUES
+  (12, TO_DATE('1990-02-21', 'YYYY-MM-DD'), 32, 160, 'Brian', 'T', 'Henry');
+
+INSERT INTO Actor (ActorID, ActorDOB, ActorAge, ActorHeight, ActorFirstName, ActorMiddleInitial, ActorLastName)
+VALUES
+  (13, TO_DATE('1991-06-05', 'YYYY-MM-DD'), 30, 174, 'Luna Lauren', NULL, 'Velez');
+
+INSERT INTO Actor (ActorID, ActorDOB, ActorAge, ActorHeight, ActorFirstName, ActorMiddleInitial, ActorLastName)
+VALUES
+  (14, TO_DATE('1972-08-26', 'YYYY-MM-DD'), 49, 188, 'John', NULL, 'Mulaney');
+
+INSERT INTO Actor (ActorID, ActorDOB, ActorAge, ActorHeight, ActorFirstName, ActorMiddleInitial, ActorLastName)
+VALUES
+  (15, TO_DATE('1964-01-07', 'YYYY-MM-DD'), 58, 185, 'Nicolas', NULL, 'Cage');
+
+INSERT INTO Actor (ActorID, ActorDOB, ActorAge, ActorHeight, ActorFirstName, ActorMiddleInitial, ActorLastName)
+VALUES
+  (16, TO_DATE('1967-09-11', 'YYYY-MM-DD'), 54, 183, 'Liev', NULL, 'Schreiber');
+
+INSERT INTO Actor (ActorID, ActorDOB, ActorAge, ActorHeight, ActorFirstName, ActorMiddleInitial, ActorLastName)
+VALUES
+  (17, TO_DATE('1985-06-02', 'YYYY-MM-DD'), 38, 170, 'Natalie', NULL, 'Morales');
+
+INSERT INTO Actor (ActorID, ActorDOB, ActorAge, ActorHeight, ActorFirstName, ActorMiddleInitial, ActorLastName)
+VALUES
+  (18, TO_DATE('1979-12-30', 'YYYY-MM-DD'), 43, 175, 'Oscar', NULL, 'Isaac');
+
+
+
+--Combining Tables
+INSERT INTO MovieDirectors (MovieID, DirectorID)
+VALUES
+  (1, 1);
+
+INSERT INTO MovieDirectors (MovieID, DirectorID)
+VALUES
+  (2, 4);
+
+INSERT INTO MovieDirectors (MovieID, DirectorID)
+VALUES
+  (3, 7);
+
+INSERT INTO MovieDirectors (MovieID, DirectorID)
+VALUES
+  (4, 7);
+
+INSERT INTO MovieDirectors (MovieID, DirectorID)
+VALUES
+  (5, 7);
+
+
+INSERT INTO MovieWriters (MovieID, WriterID)
+VALUES
+  (1, 1);
+
+INSERT INTO MovieWriters (MovieID, WriterID)
+VALUES
+  (1, 2);
+
+INSERT INTO MovieWriters (MovieID, WriterID)
+VALUES
+  (2, 1);
+
+INSERT INTO MovieWriters (MovieID, WriterID)
+VALUES
+  (2, 3);
+
+INSERT INTO MovieWriters (MovieID, WriterID)
+VALUES
+  (3, 5);
+
+INSERT INTO MovieWriters (MovieID, WriterID)
+VALUES
+  (3, 6);
+
+INSERT INTO MovieWriters (MovieID, WriterID)
+VALUES
+  (3, 7);
+
+INSERT INTO MovieWriters (MovieID, WriterID)
+VALUES
+  (4, 5);
+
+INSERT INTO MovieWriters (MovieID, WriterID)
+VALUES
+  (4, 6);
+
+INSERT INTO MovieWriters (MovieID, WriterID)
+VALUES
+  (4, 7);
+
+INSERT INTO MovieWriters (MovieID, WriterID)
+VALUES
+  (5, 5);
+
+INSERT INTO MovieWriters (MovieID, WriterID)
+VALUES
+  (5, 6);
+
+INSERT INTO MovieWriters (MovieID, WriterID)
+VALUES
+  (5, 7);
+
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 1);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 2);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 3);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 4);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 5);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 6);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 7);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 8);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 9);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 10);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 11);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 12);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 13);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 14);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 15);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 16);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 17);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 1);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 3);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 8);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 13);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 2);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 17);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 16);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 9);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 10);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 11);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 18);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 12);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 6);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 5);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 14);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 7);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 15);
+
+
+--Video Games
+INSERT INTO VideoGames (GameID, GameTitle, GameDescription, GameTrailer_Runtime, GameTrailer_URL, GameTrailer_ReleaseDate)
+VALUES
+  (1, 'Spider-Man (2018)', 'When a new villain threatens New York City, Peter Parker and Spider-Man''s worlds collide. To save the city and those he loves, he must rise up and be greater.', 1.4, ' https://www.youtube.com/watch?v=q4GdJVvdxss', TO_DATE('2018-09-07', 'YYYY-MM-DD'));
+
+INSERT INTO VideoGames (GameID, GameTitle, GameDescription, GameTrailer_Runtime, GameTrailer_URL, GameTrailer_ReleaseDate)
+VALUES
+  (2, 'Spider-Man 2 (2023)', 'Spider-Men, Peter Parker and Miles Morales, return for an exciting new adventure in the critically acclaimed Marvel''s Spider-Man franchise.', 1.1, ' https://www.youtube.com/watch?v=nq1M_Wc4FIc', TO_DATE('2023-10-20', 'YYYY-MM-DD'));
+
+INSERT INTO VideoGames (GameID, GameTitle, GameDescription, GameTrailer_Runtime, GameTrailer_URL, GameTrailer_ReleaseDate)
+VALUES
+  (3, 'Spider-Man: Miles Morales (2020)', 'Description for Spider-Man: Miles Morales (2020)', 2.03, 'https://www.youtube.com/watch?v=NTunTURbyUU', TO_DATE('2020-12-01', 'YYYY-MM-DD'));
+
+INSERT INTO GameDirectors (GameID, DirectorID)
+VALUES
+  (1, 7);
+
+INSERT INTO GameDirectors (GameID, DirectorID)
+VALUES
+  (2, 7);
+
+INSERT INTO GameDirectors (GameID, DirectorID)
+VALUES
+  (3, 7);
+
+
+INSERT INTO GameWriters (GameID, WriterID)
+VALUES
+  (1, 5);
+
+INSERT INTO GameWriters (GameID, WriterID)
+VALUES
+  (1, 6);
+
+INSERT INTO GameWriters (GameID, WriterID)
+VALUES
+  (1, 7);
+
+INSERT INTO GameWriters (GameID, WriterID)
+VALUES
+  (2, 7);
+
+INSERT INTO GameWriters (GameID, WriterID)
+VALUES
+  (2, 8);
+
+INSERT INTO GameWriters (GameID, WriterID)
+VALUES
+  (3, 8);
+
+
+INSERT INTO GameActors (GameID, ActorID)
+VALUES
+  (1, 1);
+
+INSERT INTO GameActors (GameID, ActorID)
+VALUES
+  (1, 2);
+
+INSERT INTO GameActors (GameID, ActorID)
+VALUES
+  (1, 3);
+
+INSERT INTO GameActors (GameID, ActorID)
+VALUES
+  (1, 4);
+
+INSERT INTO GameActors (GameID, ActorID)
+VALUES
+  (1, 5);
+
+INSERT INTO GameActors (GameID, ActorID)
+VALUES
+  (1, 6);
+
+INSERT INTO GameActors (GameID, ActorID)
+VALUES
+  (1, 7);
+
+INSERT INTO GameActors (GameID, ActorID)
+VALUES
+  (1, 8);
+
+INSERT INTO GameActors (GameID, ActorID)
+VALUES
+  (1, 9);
+
+INSERT INTO GameActors (GameID, ActorID)
+VALUES
+  (1, 10);
+
+INSERT INTO GameActors (GameID, ActorID)
+VALUES
+  (1, 11);
+
+INSERT INTO GameActors (GameID, ActorID)
+VALUES
+  (1, 12);
+
+INSERT INTO GameActors (GameID, ActorID)
+VALUES
+  (1, 13);
+
+
+--Tv Shows
+  -- Spider-Man: The Animated Series
+INSERT INTO TvShow (TvShowID, TvEpisodes, TvDescription, TvTrailer_Runtime, TvTrailer_URL, TvTrailer_ReleaseDate)
+VALUES
+  (1, 65, 'A young man with spider-like abilities fights crime as a superhero in New York City while trying to have a normal personal life.', 25, 'https://www.imdb.com/video/vi1030274585/?ref_=tt_vi_i_1', TO_DATE('1994-01-01', 'YYYY-MM-DD'));
+
+-- The Spectacular Spider-Man
+INSERT INTO TvShow (TvShowID, TvEpisodes, TvDescription, TvTrailer_Runtime, TvTrailer_URL, TvTrailer_ReleaseDate)
+VALUES
+  (2, 26, 'An animated television show that focuses on a sixteen-year-old Peter Parker, and the origins of Spider-Man.', 10, 'https://www.imdb.com/video/vi2936603417/?ref_=tt_vi_i_1', TO_DATE('2008-01-01', 'YYYY-MM-DD'));
+
+-- Ultimate Spider-Man
+INSERT INTO TvShow (TvShowID, TvEpisodes, TvDescription, TvTrailer_Runtime, TvTrailer_URL, TvTrailer_ReleaseDate)
+VALUES
+  (3, 104, 'Spider-Man battles evil with a new team of teen colleagues and training from S.H.I.E.L.D.', 40, 'https://www.imdb.com/video/vi2567939865/?ref_=tt_vi_i_1', TO_DATE('2012-01-01', 'YYYY-MM-DD'));
+
+-- Spider-Man
+INSERT INTO TvShow (TvShowID, TvEpisodes, TvDescription, TvTrailer_Runtime, TvTrailer_URL, TvTrailer_ReleaseDate)
+VALUES
+  (4, 58, 'Peter Parker, a new student at the famous Horizon High, fights evil supervillains as the costumed superhero, Spider-Man.', 29, 'https://www.imdb.com/video/vi671661593/?ref_=tt_vi_i_1', TO_DATE('2017-01-01', 'YYYY-MM-DD'));
+
+-- Spider-Man and His Amazing Friends
+INSERT INTO TvShow (TvShowID, TvEpisodes, TvDescription, TvTrailer_Runtime, TvTrailer_URL, TvTrailer_ReleaseDate)
+VALUES
+  (5, 24, 'Spider-Man battles crime in New York City with the help of Iceman and Firestar.', 24, 'https://www.imdb.com/video/vi174233881/?ref_=tt_vi_i_2', TO_DATE('1981-01-01', 'YYYY-MM-DD'));
+
+-- TvShowDirectors
+
+-- Spider-Man: The Animated Series
+INSERT INTO TvShowDirectors (TvShowID, DirectorID) VALUES (1, 1);
+INSERT INTO TvShowDirectors (TvShowID, DirectorID) VALUES (1, 2);
+INSERT INTO TvShowDirectors (TvShowID, DirectorID) VALUES (1, 3);
+
+-- The Spectacular Spider-Man
+INSERT INTO TvShowDirectors (TvShowID, DirectorID) VALUES (2, 4);
+INSERT INTO TvShowDirectors (TvShowID, DirectorID) VALUES (2, 5);
+INSERT INTO TvShowDirectors (TvShowID, DirectorID) VALUES (2, 6);
+
+-- Ultimate Spider-Man
+INSERT INTO TvShowDirectors (TvShowID, DirectorID) VALUES (3, 7);
+INSERT INTO TvShowDirectors (TvShowID, DirectorID) VALUES (3, 8);
+
+
+-- TvShowWriters
+
+-- Spider-Man: The Animated Series
+INSERT INTO TvShowWriters (TvShowID, WriterID) VALUES (1, 1);
+INSERT INTO TvShowWriters (TvShowID, WriterID) VALUES (1, 2);
+INSERT INTO TvShowWriters (TvShowID, WriterID) VALUES (1, 3);
+
+-- The Spectacular Spider-Man
+INSERT INTO TvShowWriters (TvShowID, WriterID) VALUES (2, 4);
+INSERT INTO TvShowWriters (TvShowID, WriterID) VALUES (2, 5);
+INSERT INTO TvShowWriters (TvShowID, WriterID) VALUES (2, 6);
+
+-- Ultimate Spider-Man
+INSERT INTO TvShowWriters (TvShowID, WriterID) VALUES (3, 7);
+INSERT INTO TvShowWriters (TvShowID, WriterID) VALUES (3, 8);
+
+
+-- TvShowActors
+
+-- Spider-Man: The Animated Series
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (1, 1);
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (1, 2);
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (1, 3);
+
+-- The Spectacular Spider-Man
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (2, 4);
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (2, 5);
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (2, 6);
+
+-- Ultimate Spider-Man
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (3, 7);
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (3, 8);
+
+-- Spider-Man (2017-2020)
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (4, 1);
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (4, 2);
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (4, 3);
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (4, 4);
+
+-- Spider-Man and His Amazing Friends
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (5, 5);
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (5, 6);
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (5, 7);
+
+
+-- Movie Reviews
+INSERT INTO MovieReviews (MovieID, StarRating, UserName, ReviewContents)
+VALUES (1, 8.4, 'ReviewUser1', 'Teen Miles Morales becomes the Spider-Man of his universe and must join with five spider-powered individuals from other dimensions to stop a threat for all realities.');
+
+INSERT INTO MovieReviews (MovieID, StarRating, UserName, ReviewContents)
+VALUES (2, 8.7, 'ReviewUser2', 'Miles Morales encounters a team of Spider-People charged with protecting its existence, leading to a clash on handling a new threat.');
+
+INSERT INTO MovieReviews (MovieID, StarRating, UserName, ReviewContents)
+VALUES(3, 7.4, 'ReviewUser3', 'Peter Parker balances life as a high school student with his superhero alter-ego Spider-Man, facing a new menace in New York City.');
+  
+
+-- Game Reviews
+INSERT INTO GameReviews (GameID, StarRating, UserName, ReviewContents)
+VALUES (1, 9.2, 'ReviewUser4', 'An immersive game where Peter Parker and Spider-Man face a new villain threatening New York City.');
+
+INSERT INTO GameReviews (GameID, StarRating, UserName, ReviewContents)
+VALUES(2, 9.4, 'ReviewUser5', 'Exciting new adventure featuring Peter Parker and Miles Morales in the Marvel\''s Spider-Man franchise.');
+
+INSERT INTO GameReviews (GameID, StarRating, UserName, ReviewContents)
+VALUES (3, 8.4, 'ReviewUser6', 'Sequel featuring Miles Morales learning about his will to fight crime.');
+
+
+-- TV Show Reviews
+INSERT INTO TvReviews (TvShowID, StarRating, UserName, ReviewContents)
+VALUES(1, 8.4, 'ReviewUser7', 'A young man with spider-like abilities fights crime as Spider-Man in New York City.');
+
+INSERT INTO TvReviews (TvShowID, StarRating, UserName, ReviewContents)
+VALUES(2, 8.4, 'ReviewUser8', 'Focuses on a sixteen-year-old Peter Parker and the origins of Spider-Man.');
+
+INSERT INTO TvReviews (TvShowID, StarRating, UserName, ReviewContents)
+VALUES  (3, 7.2, 'ReviewUser9', 'Spider-Man battles evil with a team of teen colleagues and training from S.H.I.E.L.D.');
+
+-- TV Genre
+INSERT INTO TV_GENRE (TVShowID, TVGenre)
+VALUES (1, 'Action, Adventure, Animation');
+
+-- TV Awards
+INSERT INTO TV_AWARDS (TVShowID, TVAwards)
+VALUES (1, 'N/A (4 nominations)');
+
+-- Movie Genre
+INSERT INTO MOVIE_GENRE (MovieID, MovieGenre)
+VALUES (1, 'Animation, Action, Adventure');
+
+-- Movie Awards
+INSERT INTO MOVIE_AWARDS (MovieID, MovieAwards)
+VALUES (1, '1 Oscar (81 wins & 57 nominations total)');
+
+-- Video Game Genre
+INSERT INTO VIDEO_GAME_GENRE (GameID, GameGenre)
+VALUES (1, 'Action, Adventure, Fantasy');
+
+-- Video Game Awards
+INSERT INTO VIDEO_GAME_AWARDS (GameID, GameAwards)
+VALUES (1, 'N/A Nominated for 3 BAFTA Awards (4 wins 41 total nominations)');
+
+-- Actor Genre
+INSERT INTO ACTOR_GENRE (ActorID, ActorGenre)
+VALUES (1, 'Animation, Action, Adventure');
+
+-- Actor Awards
+INSERT INTO ACTOR_AWARDS (ActorID, ActorAwards)
+VALUES (1, 'N/A (17 wins & 65 nominations total)');
+
+-- Director Genre
+INSERT INTO DIRECTOR_GENRE (DirectorID, DirectorGenre)
+VALUES (1, 'Animation, Action, Adventure');
+
+-- Director Awards
+INSERT INTO DIRECTOR_AWARDS (DirectorID, DirectorAwards)
+VALUES (1, 'N/A (Won 1 Oscar, 25 wins & 60 nominations)');
+
+
+
+
+
+-- For MySQL again
+DESCRIBE TV_GENRE;
+DESCRIBE TV_AWARDS;
+DESCRIBE MOVIE_GENRE;
+DESCRIBE MOVIE_AWARDS;
+DESCRIBE VIDEO_GAME_GENRE;
+DESCRIBE VIDEO_GAME_AWARDS;
+DESCRIBE ACTOR_GENRE;
+DESCRIBE ACTOR_AWARDS;
+DESCRIBE DIRECTOR_GENRE;
+DESCRIBE DIRECTOR_AWARDS;
