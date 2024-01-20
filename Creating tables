@@ -1,0 +1,285 @@
+-- Drop existing tables with CASCADE CONSTRAINTS
+DROP TABLE TvShow CASCADE CONSTRAINTS;
+DROP TABLE Movie CASCADE CONSTRAINTS;
+DROP TABLE VideoGames CASCADE CONSTRAINTS;
+DROP TABLE Actor CASCADE CONSTRAINTS;
+DROP TABLE Director CASCADE CONSTRAINTS;
+DROP TABLE Writer CASCADE CONSTRAINTS;
+DROP TABLE TvReviews CASCADE CONSTRAINTS;
+DROP TABLE MovieReviews CASCADE CONSTRAINTS;
+DROP TABLE GameReviews CASCADE CONSTRAINTS;
+DROP TABLE TvShowWriters CASCADE CONSTRAINTS;
+DROP TABLE TvShowActors CASCADE CONSTRAINTS;
+DROP TABLE TvShowDirectors CASCADE CONSTRAINTS;
+DROP TABLE MovieWriters CASCADE CONSTRAINTS;
+DROP TABLE MovieActors CASCADE CONSTRAINTS;
+DROP TABLE MovieDirectors CASCADE CONSTRAINTS;
+DROP TABLE GameDirectors CASCADE CONSTRAINTS;
+DROP TABLE GameActors CASCADE CONSTRAINTS;
+DROP TABLE GameWriters CASCADE CONSTRAINTS;
+DROP TABLE TV_GENRE CASCADE CONSTRAINTS;
+DROP TABLE TV_AWARDS CASCADE CONSTRAINTS;
+DROP TABLE MOVIE_GENRE CASCADE CONSTRAINTS;
+DROP TABLE MOVIE_AWARDS CASCADE CONSTRAINTS;
+DROP TABLE VIDEO_GAME_GENRE CASCADE CONSTRAINTS;
+DROP TABLE VIDEO_GAME_AWARDS CASCADE CONSTRAINTS;
+DROP TABLE ACTOR_GENRE CASCADE CONSTRAINTS;
+DROP TABLE ACTOR_AWARDS CASCADE CONSTRAINTS;
+DROP TABLE DIRECTOR_GENRE CASCADE CONSTRAINTS;
+DROP TABLE DIRECTOR_AWARDS CASCADE CONSTRAINTS;
+
+
+
+
+
+
+
+-- Create TvShow Table
+CREATE TABLE TvShow (
+    TvShowID NUMBER CONSTRAINT TvShow_tvShowId_pk PRIMARY KEY, -- Unique identifier for TV shows
+    TvEpisodes NUMBER, -- Number of episodes
+    TvDescription VARCHAR2(255), -- Description of the TV show
+    TvTrailer_Runtime NUMBER, -- Trailer runtime in seconds
+    TvTrailer_URL VARCHAR2(255), -- URL link to the TV show trailer
+    TvTrailer_ReleaseDate DATE -- Release date of the TV show trailer
+    -- Other columns might include genre, release date, etc.
+);
+
+-- Create Movie Table
+CREATE TABLE Movie (
+    MovieID NUMBER CONSTRAINT Movie_MovieId_pk PRIMARY KEY, -- Unique identifier for movies
+    MovieRuntime NUMBER, -- Movie runtime in minutes
+    MovieDescription VARCHAR2(255), -- Description of the movie
+    MovieTitle VARCHAR2(255), -- Title of the movie
+    MovieTrailer_Runtime NUMBER, -- Trailer runtime in seconds
+    MovieTrailer_URL VARCHAR2(255), -- URL link to the movie trailer
+    MovieTrailer_ReleaseDate DATE -- Release date of the movie trailer
+    -- Other columns might include genre, release date, etc.
+);
+
+-- Create Video Games Table
+CREATE TABLE VideoGames (
+    GameID NUMBER CONSTRAINT VideoGames_gameId_pk PRIMARY KEY, -- Unique identifier for video games
+    GameTitle VARCHAR2(255), -- Title of the video game
+    GameDescription VARCHAR2(255), -- Description of the video game
+    GameTrailer_Runtime NUMBER, -- Trailer runtime in seconds
+    GameTrailer_URL VARCHAR2(255), -- URL link to the video game trailer
+    GameTrailer_ReleaseDate DATE -- Release date of the video game trailer
+    -- Other columns might include genre, release date, etc.
+);
+
+-- Create Actor Table
+CREATE TABLE Actor (
+    ActorID NUMBER CONSTRAINT Actor_actorId_pk PRIMARY KEY, -- Unique identifier for actors
+    ActorDOB DATE, -- Actor's date of birth
+    ActorAge NUMBER, -- Actor's age
+    ActorHeight NUMBER, -- Actor's height
+    ActorFirstName VARCHAR2(50), -- Actor's first name
+    ActorMiddleInitial CHAR(1), -- Actor's middle initial
+    ActorLastName VARCHAR2(50) -- Actor's last name
+    -- Other columns might include gender, nationality, etc.
+);
+
+-- Create Director Table (similar structure to Actor)
+CREATE TABLE Director (
+    DirectorID NUMBER CONSTRAINT Director_DirectorID_pk PRIMARY KEY, -- Unique identifier for directors
+    DirectorDOB DATE, -- Director's date of birth
+    DirectorAge NUMBER, -- Director's age
+    DirectorHeight NUMBER, -- Director's height
+    DirectorFirstName VARCHAR2(50), -- Director's first name
+    DirectorMiddleInitial CHAR(1), -- Director's middle initial
+    DirectorLastName VARCHAR2(50) -- Director's last name
+    -- Other columns might include gender, nationality, etc.
+);
+
+-- Create Writer Table (similar structure to Actor)
+CREATE TABLE Writer (
+    WriterID NUMBER CONSTRAINT Writer_writerID_pk PRIMARY KEY, -- Unique identifier for writers
+    WriterDOB DATE, -- Writer's date of birth
+    WriterAge NUMBER, -- Writer's age
+    WriterHeight NUMBER, -- Writer's height
+    WriterFirstName VARCHAR2(50), -- Writer's first name
+    WriterMiddleInitial CHAR(1), -- Writer's middle initial
+    WriterLastName VARCHAR2(50) -- Writer's last name
+    -- Other columns might include gender, nationality, etc.
+);
+
+-- Create Review Tables (for TvShow, Movie, VideoGames)
+CREATE TABLE TvReviews (
+    TvShowID NUMBER, -- ID of the TV show being reviewed
+    StarRating NUMBER, -- Rating given to the TV show
+    UserName VARCHAR2(50), -- Name of the user who reviewed the TV show
+    ReviewContents VARCHAR2(255), -- Contents of the review
+    CONSTRAINT TvR_TvID_pk PRIMARY KEY (TvShowID, UserName), -- Primary key constraint
+    CONSTRAINT TvR_TvID_fk FOREIGN KEY (TvShowID) REFERENCES TvShow(TvShowID) -- Foreign key constraint
+);
+
+CREATE TABLE MovieReviews (
+    MovieID NUMBER, -- ID of the movie being reviewed
+    StarRating NUMBER, -- Rating given to the movie
+    UserName VARCHAR2(50), -- Name of the user who reviewed the movie
+    ReviewContents VARCHAR2(255), -- Contents of the review
+    CONSTRAINT MovieR_MovieID_pk PRIMARY KEY (MovieID, UserName), -- Primary key constraint
+    CONSTRAINT Movie_MovieID_fk FOREIGN KEY (MovieID) REFERENCES Movie(MovieID) -- Foreign key constraint
+);
+
+CREATE TABLE GameReviews (
+    GameID NUMBER, -- ID of the video game being reviewed
+    StarRating NUMBER, -- Rating given to the video game
+    UserName VARCHAR2(50), -- Name of the user who reviewed the video game
+    ReviewContents VARCHAR2(255), -- Contents of the review
+    CONSTRAINT GameR_GameID_pk PRIMARY KEY (GameID, UserName), -- Primary key constraint
+    CONSTRAINT GameR_GameID_fk FOREIGN KEY (GameID) REFERENCES VideoGames(GameID) -- Foreign key constraint
+);
+
+-- Create M:N Relationship Tables (for Movie, TvShow, VideoGames with Actors, Writers, Directors)
+CREATE TABLE MovieActors (
+    MovieID NUMBER, -- ID of the movie
+    ActorID NUMBER, -- ID of the actor
+    CONSTRAINT MovieAct_MovieID__ActID_pk PRIMARY KEY (MovieID, ActorID), -- Primary key constraint
+    CONSTRAINT MovieAct_MovieID_fk FOREIGN KEY (MovieID) REFERENCES Movie(MovieID), -- Foreign key constraint
+    CONSTRAINT MovieAct_ActID_fk FOREIGN KEY (ActorID) REFERENCES Actor(ActorID) -- Foreign key constraint
+);
+
+CREATE TABLE MovieWriters (
+    MovieID NUMBER, -- ID of the movie
+    WriterID NUMBER, -- ID of the writer
+    CONSTRAINT MovieWri_MovieID_WriID_pk PRIMARY KEY (MovieID, WriterID), -- Primary key constraint
+    CONSTRAINT MovieWri_MovieID_MovieID_fk FOREIGN KEY (MovieID) REFERENCES Movie(MovieID), -- Foreign key constraint
+    CONSTRAINT MovieWri_WriID_WriID_fk FOREIGN KEY (WriterID) REFERENCES Writer(WriterID) -- Foreign key constraint
+);
+
+CREATE TABLE MovieDirectors (
+    MovieID NUMBER, -- ID of the movie
+    DirectorID NUMBER, -- ID of the director
+    CONSTRAINT MovieDir_MovieID_DirID_pk PRIMARY KEY (MovieID, DirectorID), -- Primary key constraint
+    CONSTRAINT MovieDir_MovieID_MovieID_fk
+FOREIGN KEY (MovieID) REFERENCES Movie(MovieID), -- Foreign key constraint
+    CONSTRAINT MovieDir_DirID_DirID_fk FOREIGN KEY (DirectorID) REFERENCES Director(DirectorID) -- Foreign key constraint
+);
+
+CREATE TABLE TvShowActors (
+    TvShowID NUMBER, -- ID of the TV show
+    ActorID NUMBER, -- ID of the actor
+    CONSTRAINT TvAct_TvID_ActID_pk PRIMARY KEY (TvShowID, ActorID), -- Primary key constraint
+    CONSTRAINT TvAct_TvID_TvID_fk FOREIGN KEY (TvShowID) REFERENCES TvShow(TvShowID), -- Foreign key constraint
+    CONSTRAINT Tv_ActID_ActID FOREIGN KEY (ActorID) REFERENCES Actor(ActorID) -- Foreign key constraint
+);
+
+CREATE TABLE TvShowWriters (
+    TvShowID NUMBER, -- ID of the TV show
+    WriterID NUMBER, -- ID of the writer
+    CONSTRAINT TvWri_TvID_WriID_pk PRIMARY KEY (TvShowID, WriterID), -- Primary key constraint
+    CONSTRAINT TvWri_TvID_TvID_fk FOREIGN KEY (TvShowID) REFERENCES TvShow(TvShowID), -- Foreign key constraint
+    CONSTRAINT TvWri_WriID_WriID_fk FOREIGN KEY (WriterID) REFERENCES Writer(WriterID) -- Foreign key constraint
+);
+
+CREATE TABLE TvShowDirectors (
+    TvShowID NUMBER, -- ID of the TV show
+    DirectorID NUMBER, -- ID of the director
+    CONSTRAINT TvDir_TvSID_dID_pk PRIMARY KEY (TvShowID, DirectorID), -- Primary key constraint
+    CONSTRAINT TvDir_TvID_TvID_fk FOREIGN KEY (TvShowID) REFERENCES TvShow(TvShowID), -- Foreign key constraint
+    CONSTRAINT TvDir_DirID_DirID_fk FOREIGN KEY (DirectorID) REFERENCES Director(DirectorID) -- Foreign key constraint
+);
+
+CREATE TABLE GameActors (
+    GameID NUMBER, -- ID of the video game
+    ActorID NUMBER, -- ID of the actor
+    CONSTRAINT GameAct_GameID_ActID_pk PRIMARY KEY (GameID, ActorID), -- Primary key constraint
+    CONSTRAINT GameAct_GameID_GameID_fk FOREIGN KEY (GameID) REFERENCES VideoGames(GameID), -- Foreign key constraint
+    CONSTRAINT GameAct_ActID_ActID_fk FOREIGN KEY (ActorID) REFERENCES Actor(ActorID) -- Foreign key constraint
+);
+
+CREATE TABLE GameWriters (
+    GameID NUMBER, -- ID of the video game
+    WriterID NUMBER, -- ID of the writer
+    CONSTRAINT gWri_gID_WriID_pk PRIMARY KEY (GameID, WriterID), -- Primary key constraint
+    CONSTRAINT gWri_gID_gID_fk FOREIGN KEY (GameID) REFERENCES VideoGames(GameID), -- Foreign key constraint
+    CONSTRAINT gWri_WriID_WriID_fk FOREIGN KEY (WriterID) REFERENCES Writer(WriterID) -- Foreign key constraint
+);
+
+CREATE TABLE GameDirectors (
+    GameID NUMBER, -- ID of the video game
+    DirectorID NUMBER, -- ID of the director
+    CONSTRAINT gD_gID_DirID_pk PRIMARY KEY (GameID, DirectorID), -- Primary key constraint
+    CONSTRAINT gD_gID_gID_fk FOREIGN KEY (GameID) REFERENCES VideoGames(GameID), -- Foreign key constraint
+    CONSTRAINT gD_dirID_DirID_fk FOREIGN KEY (DirectorID) REFERENCES Director(DirectorID) -- Foreign key constraint
+);
+
+
+--The Weak Entities
+CREATE TABLE TV_GENRE (
+  TVShowID NUMBER REFERENCES TvShow(TVShowID), -- Creates a table named TV_GENRE with columns TVShowID and TVGenre. TVShowID column references the TVShow table's TVShowID column.
+  TVGenre VARCHAR2(50) -- Defines TVGenre column as a VARCHAR2 datatype with a maximum length of 50 characters.
+);
+
+
+CREATE TABLE TV_AWARDS (
+  TVShowID NUMBER(10) REFERENCES TvShow(TVShowID), -- Creates a table named TV_AWARDS with columns TVShowID and TVAwards. TVShowID column references the TVShow table's TVShowID column.
+  TVAwards VARCHAR2(50) -- Defines TVAwards column as a VARCHAR2 datatype with a maximum length of 50 characters.
+);
+
+
+CREATE TABLE MOVIE_GENRE (
+  MovieID NUMBER(10) REFERENCES Movie(MovieID), -- Creates a table named MOVIE_GENRE with columns MovieID and MovieGenre. MovieID column references the Movie table's MovieID column.
+  MovieGenre VARCHAR2(50) -- Defines MovieGenre column as a VARCHAR2 datatype with a maximum length of 50 characters.
+);
+
+
+CREATE TABLE MOVIE_AWARDS (
+  MovieID NUMBER(10) REFERENCES Movie(MovieID), -- Creates a table named MOVIE_AWARDS with columns MovieID and MovieAwards. MovieID column references the Movie table's MovieID column.
+  MovieAwards VARCHAR2(50) -- Defines MovieAwards column as a VARCHAR2 datatype with a maximum length of 50 characters.
+);
+
+
+CREATE TABLE VIDEO_GAME_GENRE (
+  GameID NUMBER(10) REFERENCES VideoGames(GameID), -- Creates a table named VIDEO_GAME_GENRE with columns GameID and GameGenre. GameID column references the VideoGames table's GameID column.
+  GameGenre VARCHAR2(50) -- Defines GameGenre column as a VARCHAR2 datatype with a maximum length of 50 characters.
+);
+
+
+CREATE TABLE VIDEO_GAME_AWARDS (
+  GameID NUMBER(10) REFERENCES VideoGames(GameID), -- Creates a table named VIDEO_GAME_AWARDS with columns GameID and GameAwards. GameID column references the VideoGames table's GameID column.
+  GameAwards VARCHAR2(50) -- Defines GameAwards column as a VARCHAR2 datatype with a maximum length of 50 characters.
+);
+
+
+CREATE TABLE ACTOR_GENRE (
+  ActorID NUMBER(10) REFERENCES ACTOR(ActorID), -- Creates a table named ACTOR_GENRE with columns ActorID and ActorGenre. ActorID column references the ACTOR table's ActorID column.
+  ActorGenre VARCHAR2(50) -- Defines ActorGenre column as a VARCHAR2 datatype with a maximum length of 50 characters.
+);
+
+
+CREATE TABLE ACTOR_AWARDS (
+  ActorID NUMBER(10) REFERENCES ACTOR(ActorID), -- Creates a table named ACTOR_AWARDS with columns ActorID and ActorAwards. ActorID column references the ACTOR table's ActorID column.
+  ActorAwards VARCHAR2(50) -- Defines ActorAwards column as a VARCHAR2 datatype with a maximum length of 50 characters.
+);
+
+
+CREATE TABLE DIRECTOR_GENRE (
+  DirectorID NUMBER(10) REFERENCES DIRECTOR(DirectorID), -- Creates a table named DIRECTOR_GENRE with columns DirectorID and DirectorGenre. DirectorID column references the DIRECTOR table's DirectorID column.
+  DirectorGenre VARCHAR2(50) -- Defines DirectorGenre column as a VARCHAR2 datatype with a maximum length of 50 characters.
+);
+
+
+CREATE TABLE DIRECTOR_AWARDS (
+  DirectorID NUMBER(10) REFERENCES DIRECTOR(DirectorID), -- Creates a table named DIRECTOR_AWARDS with columns DirectorID and DirectorAwards. DirectorID column references the DIRECTOR table's DirectorID column.
+  DirectorAwards VARCHAR2(50) -- Defines DirectorAwards column as a VARCHAR2 datatype with a maximum length of 50 characters.
+);
+
+
+
+
+-- -- For MySQL
+-- DESCRIBE TV_GENRE;
+-- DESCRIBE TV_AWARDS;
+-- DESCRIBE MOVIE_GENRE;
+-- DESCRIBE MOVIE_AWARDS;
+-- DESCRIBE VIDEO_GAME_GENRE;
+-- DESCRIBE VIDEO_GAME_AWARDS;
+-- DESCRIBE ACTOR_GENRE;
+-- DESCRIBE ACTOR_AWARDS;
+-- DESCRIBE DIRECTOR_GENRE;
+-- DESCRIBE DIRECTOR_AWARDS;
+
+
