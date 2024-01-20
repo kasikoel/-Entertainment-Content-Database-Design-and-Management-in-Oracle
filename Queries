@@ -1,0 +1,491 @@
+--Combining Tables
+INSERT INTO MovieDirectors (MovieID, DirectorID)
+VALUES
+  (1, 1);
+
+INSERT INTO MovieDirectors (MovieID, DirectorID)
+VALUES
+  (2, 4);
+
+INSERT INTO MovieDirectors (MovieID, DirectorID)
+VALUES
+  (3, 7);
+
+INSERT INTO MovieDirectors (MovieID, DirectorID)
+VALUES
+  (4, 7);
+
+INSERT INTO MovieDirectors (MovieID, DirectorID)
+VALUES
+  (5, 7);
+
+
+INSERT INTO MovieWriters (MovieID, WriterID)
+VALUES
+  (1, 1);
+
+INSERT INTO MovieWriters (MovieID, WriterID)
+VALUES
+  (1, 2);
+
+INSERT INTO MovieWriters (MovieID, WriterID)
+VALUES
+  (2, 1);
+
+INSERT INTO MovieWriters (MovieID, WriterID)
+VALUES
+  (2, 3);
+
+INSERT INTO MovieWriters (MovieID, WriterID)
+VALUES
+  (3, 5);
+
+INSERT INTO MovieWriters (MovieID, WriterID)
+VALUES
+  (3, 6);
+
+INSERT INTO MovieWriters (MovieID, WriterID)
+VALUES
+  (3, 7);
+
+INSERT INTO MovieWriters (MovieID, WriterID)
+VALUES
+  (4, 5);
+
+INSERT INTO MovieWriters (MovieID, WriterID)
+VALUES
+  (4, 6);
+
+INSERT INTO MovieWriters (MovieID, WriterID)
+VALUES
+  (4, 7);
+
+INSERT INTO MovieWriters (MovieID, WriterID)
+VALUES
+  (5, 5);
+
+INSERT INTO MovieWriters (MovieID, WriterID)
+VALUES
+  (5, 6);
+
+INSERT INTO MovieWriters (MovieID, WriterID)
+VALUES
+  (5, 7);
+
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 1);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 2);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 3);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 4);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 5);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 6);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 7);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 8);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 9);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 10);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 11);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 12);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 13);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 14);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 15);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 16);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (1, 17);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 1);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 3);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 8);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 13);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 2);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 17);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 16);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 9);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 10);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 11);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 18);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 12);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 6);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 5);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 14);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 7);
+
+INSERT INTO MovieActors (MovieID, ActorID)
+VALUES
+  (2, 15);
+
+
+--Video Games
+INSERT INTO VideoGames (GameID, GameTitle, GameDescription, GameTrailer_Runtime, GameTrailer_URL, GameTrailer_ReleaseDate)
+VALUES
+  (1, 'Spider-Man (2018)', 'When a new villain threatens New York City, Peter Parker and Spider-Man''s worlds collide. To save the city and those he loves, he must rise up and be greater.', 1.4, ' https://www.youtube.com/watch?v=q4GdJVvdxss', TO_DATE('2018-09-07', 'YYYY-MM-DD'));
+
+INSERT INTO VideoGames (GameID, GameTitle, GameDescription, GameTrailer_Runtime, GameTrailer_URL, GameTrailer_ReleaseDate)
+VALUES
+  (2, 'Spider-Man 2 (2023)', 'Spider-Men, Peter Parker and Miles Morales, return for an exciting new adventure in the critically acclaimed Marvel''s Spider-Man franchise.', 1.1, ' https://www.youtube.com/watch?v=nq1M_Wc4FIc', TO_DATE('2023-10-20', 'YYYY-MM-DD'));
+
+INSERT INTO VideoGames (GameID, GameTitle, GameDescription, GameTrailer_Runtime, GameTrailer_URL, GameTrailer_ReleaseDate)
+VALUES
+  (3, 'Spider-Man: Miles Morales (2020)', 'Description for Spider-Man: Miles Morales (2020)', 2.03, 'https://www.youtube.com/watch?v=NTunTURbyUU', TO_DATE('2020-12-01', 'YYYY-MM-DD'));
+
+INSERT INTO GameDirectors (GameID, DirectorID)
+VALUES
+  (1, 7);
+
+INSERT INTO GameDirectors (GameID, DirectorID)
+VALUES
+  (2, 7);
+
+INSERT INTO GameDirectors (GameID, DirectorID)
+VALUES
+  (3, 7);
+
+
+INSERT INTO GameWriters (GameID, WriterID)
+VALUES
+  (1, 5);
+
+INSERT INTO GameWriters (GameID, WriterID)
+VALUES
+  (1, 6);
+
+INSERT INTO GameWriters (GameID, WriterID)
+VALUES
+  (1, 7);
+
+INSERT INTO GameWriters (GameID, WriterID)
+VALUES
+  (2, 7);
+
+INSERT INTO GameWriters (GameID, WriterID)
+VALUES
+  (2, 8);
+
+INSERT INTO GameWriters (GameID, WriterID)
+VALUES
+  (3, 8);
+
+
+INSERT INTO GameActors (GameID, ActorID)
+VALUES
+  (1, 1);
+
+INSERT INTO GameActors (GameID, ActorID)
+VALUES
+  (1, 2);
+
+INSERT INTO GameActors (GameID, ActorID)
+VALUES
+  (1, 3);
+
+INSERT INTO GameActors (GameID, ActorID)
+VALUES
+  (1, 4);
+
+INSERT INTO GameActors (GameID, ActorID)
+VALUES
+  (1, 5);
+
+INSERT INTO GameActors (GameID, ActorID)
+VALUES
+  (1, 6);
+
+INSERT INTO GameActors (GameID, ActorID)
+VALUES
+  (1, 7);
+
+INSERT INTO GameActors (GameID, ActorID)
+VALUES
+  (1, 8);
+
+INSERT INTO GameActors (GameID, ActorID)
+VALUES
+  (1, 9);
+
+INSERT INTO GameActors (GameID, ActorID)
+VALUES
+  (1, 10);
+
+INSERT INTO GameActors (GameID, ActorID)
+VALUES
+  (1, 11);
+
+INSERT INTO GameActors (GameID, ActorID)
+VALUES
+  (1, 12);
+
+INSERT INTO GameActors (GameID, ActorID)
+VALUES
+  (1, 13);
+
+
+--Tv Shows
+  -- Spider-Man: The Animated Series
+INSERT INTO TvShow (TvShowID, TvEpisodes, TvDescription, TvTrailer_Runtime, TvTrailer_URL, TvTrailer_ReleaseDate)
+VALUES
+  (1, 65, 'A young man with spider-like abilities fights crime as a superhero in New York City while trying to have a normal personal life.', 25, 'https://www.imdb.com/video/vi1030274585/?ref_=tt_vi_i_1', TO_DATE('1994-01-01', 'YYYY-MM-DD'));
+
+-- The Spectacular Spider-Man
+INSERT INTO TvShow (TvShowID, TvEpisodes, TvDescription, TvTrailer_Runtime, TvTrailer_URL, TvTrailer_ReleaseDate)
+VALUES
+  (2, 26, 'An animated television show that focuses on a sixteen-year-old Peter Parker, and the origins of Spider-Man.', 10, 'https://www.imdb.com/video/vi2936603417/?ref_=tt_vi_i_1', TO_DATE('2008-01-01', 'YYYY-MM-DD'));
+
+-- Ultimate Spider-Man
+INSERT INTO TvShow (TvShowID, TvEpisodes, TvDescription, TvTrailer_Runtime, TvTrailer_URL, TvTrailer_ReleaseDate)
+VALUES
+  (3, 104, 'Spider-Man battles evil with a new team of teen colleagues and training from S.H.I.E.L.D.', 40, 'https://www.imdb.com/video/vi2567939865/?ref_=tt_vi_i_1', TO_DATE('2012-01-01', 'YYYY-MM-DD'));
+
+-- Spider-Man
+INSERT INTO TvShow (TvShowID, TvEpisodes, TvDescription, TvTrailer_Runtime, TvTrailer_URL, TvTrailer_ReleaseDate)
+VALUES
+  (4, 58, 'Peter Parker, a new student at the famous Horizon High, fights evil supervillains as the costumed superhero, Spider-Man.', 29, 'https://www.imdb.com/video/vi671661593/?ref_=tt_vi_i_1', TO_DATE('2017-01-01', 'YYYY-MM-DD'));
+
+-- Spider-Man and His Amazing Friends
+INSERT INTO TvShow (TvShowID, TvEpisodes, TvDescription, TvTrailer_Runtime, TvTrailer_URL, TvTrailer_ReleaseDate)
+VALUES
+  (5, 24, 'Spider-Man battles crime in New York City with the help of Iceman and Firestar.', 24, 'https://www.imdb.com/video/vi174233881/?ref_=tt_vi_i_2', TO_DATE('1981-01-01', 'YYYY-MM-DD'));
+
+-- TvShowDirectors
+
+-- Spider-Man: The Animated Series
+INSERT INTO TvShowDirectors (TvShowID, DirectorID) VALUES (1, 1);
+INSERT INTO TvShowDirectors (TvShowID, DirectorID) VALUES (1, 2);
+INSERT INTO TvShowDirectors (TvShowID, DirectorID) VALUES (1, 3);
+
+-- The Spectacular Spider-Man
+INSERT INTO TvShowDirectors (TvShowID, DirectorID) VALUES (2, 4);
+INSERT INTO TvShowDirectors (TvShowID, DirectorID) VALUES (2, 5);
+INSERT INTO TvShowDirectors (TvShowID, DirectorID) VALUES (2, 6);
+
+-- Ultimate Spider-Man
+INSERT INTO TvShowDirectors (TvShowID, DirectorID) VALUES (3, 7);
+INSERT INTO TvShowDirectors (TvShowID, DirectorID) VALUES (3, 8);
+
+
+-- TvShowWriters
+
+-- Spider-Man: The Animated Series
+INSERT INTO TvShowWriters (TvShowID, WriterID) VALUES (1, 1);
+INSERT INTO TvShowWriters (TvShowID, WriterID) VALUES (1, 2);
+INSERT INTO TvShowWriters (TvShowID, WriterID) VALUES (1, 3);
+
+-- The Spectacular Spider-Man
+INSERT INTO TvShowWriters (TvShowID, WriterID) VALUES (2, 4);
+INSERT INTO TvShowWriters (TvShowID, WriterID) VALUES (2, 5);
+INSERT INTO TvShowWriters (TvShowID, WriterID) VALUES (2, 6);
+
+-- Ultimate Spider-Man
+INSERT INTO TvShowWriters (TvShowID, WriterID) VALUES (3, 7);
+INSERT INTO TvShowWriters (TvShowID, WriterID) VALUES (3, 8);
+
+
+-- TvShowActors
+
+-- Spider-Man: The Animated Series
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (1, 1);
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (1, 2);
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (1, 3);
+
+-- The Spectacular Spider-Man
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (2, 4);
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (2, 5);
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (2, 6);
+
+-- Ultimate Spider-Man
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (3, 7);
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (3, 8);
+
+-- Spider-Man (2017-2020)
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (4, 1);
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (4, 2);
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (4, 3);
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (4, 4);
+
+-- Spider-Man and His Amazing Friends
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (5, 5);
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (5, 6);
+INSERT INTO TvShowActors (TvShowID, ActorID) VALUES (5, 7);
+
+
+-- Movie Reviews
+INSERT INTO MovieReviews (MovieID, StarRating, UserName, ReviewContents)
+VALUES (1, 8.4, 'ReviewUser1', 'Teen Miles Morales becomes the Spider-Man of his universe and must join with five spider-powered individuals from other dimensions to stop a threat for all realities.');
+
+INSERT INTO MovieReviews (MovieID, StarRating, UserName, ReviewContents)
+VALUES (2, 8.7, 'ReviewUser2', 'Miles Morales encounters a team of Spider-People charged with protecting its existence, leading to a clash on handling a new threat.');
+
+INSERT INTO MovieReviews (MovieID, StarRating, UserName, ReviewContents)
+VALUES(3, 7.4, 'ReviewUser3', 'Peter Parker balances life as a high school student with his superhero alter-ego Spider-Man, facing a new menace in New York City.');
+  
+
+-- Game Reviews
+INSERT INTO GameReviews (GameID, StarRating, UserName, ReviewContents)
+VALUES (1, 9.2, 'ReviewUser4', 'An immersive game where Peter Parker and Spider-Man face a new villain threatening New York City.');
+
+INSERT INTO GameReviews (GameID, StarRating, UserName, ReviewContents)
+VALUES(2, 9.4, 'ReviewUser5', 'Exciting new adventure featuring Peter Parker and Miles Morales in the Marvel\''s Spider-Man franchise.');
+
+INSERT INTO GameReviews (GameID, StarRating, UserName, ReviewContents)
+VALUES (3, 8.4, 'ReviewUser6', 'Sequel featuring Miles Morales learning about his will to fight crime.');
+
+
+-- TV Show Reviews
+INSERT INTO TvReviews (TvShowID, StarRating, UserName, ReviewContents)
+VALUES(1, 8.4, 'ReviewUser7', 'A young man with spider-like abilities fights crime as Spider-Man in New York City.');
+
+INSERT INTO TvReviews (TvShowID, StarRating, UserName, ReviewContents)
+VALUES(2, 8.4, 'ReviewUser8', 'Focuses on a sixteen-year-old Peter Parker and the origins of Spider-Man.');
+
+INSERT INTO TvReviews (TvShowID, StarRating, UserName, ReviewContents)
+VALUES  (3, 7.2, 'ReviewUser9', 'Spider-Man battles evil with a team of teen colleagues and training from S.H.I.E.L.D.');
+
+-- TV Genre
+INSERT INTO TV_GENRE (TVShowID, TVGenre)
+VALUES (1, 'Action, Adventure, Animation');
+
+-- TV Awards
+INSERT INTO TV_AWARDS (TVShowID, TVAwards)
+VALUES (1, 'N/A (4 nominations)');
+
+-- Movie Genre
+INSERT INTO MOVIE_GENRE (MovieID, MovieGenre)
+VALUES (1, 'Animation, Action, Adventure');
+
+-- Movie Awards
+INSERT INTO MOVIE_AWARDS (MovieID, MovieAwards)
+VALUES (1, '1 Oscar (81 wins & 57 nominations total)');
+
+-- Video Game Genre
+INSERT INTO VIDEO_GAME_GENRE (GameID, GameGenre)
+VALUES (1, 'Action, Adventure, Fantasy');
+
+-- Video Game Awards
+INSERT INTO VIDEO_GAME_AWARDS (GameID, GameAwards)
+VALUES (1, 'N/A Nominated for 3 BAFTA Awards (4 wins 41 total nominations)');
+
+-- Actor Genre
+INSERT INTO ACTOR_GENRE (ActorID, ActorGenre)
+VALUES (1, 'Animation, Action, Adventure');
+
+-- Actor Awards
+INSERT INTO ACTOR_AWARDS (ActorID, ActorAwards)
+VALUES (1, 'N/A (17 wins & 65 nominations total)');
+
+-- Director Genre
+INSERT INTO DIRECTOR_GENRE (DirectorID, DirectorGenre)
+VALUES (1, 'Animation, Action, Adventure');
+
+-- Director Awards
+INSERT INTO DIRECTOR_AWARDS (DirectorID, DirectorAwards)
+VALUES (1, 'N/A (Won 1 Oscar, 25 wins & 60 nominations)');
+
+
+
+
+
+-- For MySQL again
+DESCRIBE TV_GENRE;
+DESCRIBE TV_AWARDS;
+DESCRIBE MOVIE_GENRE;
+DESCRIBE MOVIE_AWARDS;
+DESCRIBE VIDEO_GAME_GENRE;
+DESCRIBE VIDEO_GAME_AWARDS;
+DESCRIBE ACTOR_GENRE;
+DESCRIBE ACTOR_AWARDS;
+DESCRIBE DIRECTOR_GENRE;
+DESCRIBE DIRECTOR_AWARDS;
